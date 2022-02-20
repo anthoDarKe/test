@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/head">
+    <title id="pageTitle">Spring Boot Thymeleaf Hello World Example</title>
+</head>
+<body>
+
+<nav th:include="fragments/navbar"></nav>
+
+<div class="container">
+    <div th:if="${loginError}">
+        <div class="alert alert-danger">
+            Invalid username, e-mail address or password.
+        </div>
+    </div>
+    <div th:if="${emailExists}">
+        <div class="alert alert-danger">
+            Email already exists.
+        </div>
+    </div>
+    <div th:if="${usernameExists}">
+        <div class="alert alert-danger">
+            Username already exists.
+        </div>
+    </div>
+    <div th:if="${emptyField}">
+        <div class="alert alert-danger">
+            Fields have been left empty.
+        </div>
+    </div>
+    <div th:if="${invalidEmail}">
+        <div class="alert alert-danger">
+            Invalid e-mail address.
+        </div>
+    </div>
+    <div th:if="${invalidUsername}">
+        <div class="alert alert-danger">
+            Invalid username: it must only contain letters A to Z and numbers (no spaces or special characters allowed)
+            and be 20 characters long or less.
+        </div>
+    </div>
+    <div th:if="${passwordMismatch}">
+        <div class="alert alert-danger">
+            Passwords do not match.
+        </div>
+    </div>
+    <div th:if="${logout}">
+        <div class="alert alert-info">
+            You have been logged out.
+        </div>
+    </div>
+    <div th:if="${registerSuccessful}">
+        <div class="alert alert-success">
+            Your account has been registered.
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="text-center"><h3><b>Register</b></h3></div>
+            <form id="ajax-register-form" th:action="@{/register}" th:object="${user}" method="post" role="form"
+                  autocomplete="off" data-toggle="validator">
+                <div class="form-group">
+                    <label for="username" class="control-label">Username</label>
+                    <input type="text" th:field="*{username}" name="username" id="username" tabindex="1"
+                           class="form-control" placeholder="HermioneGranger76" value="" required="true" maxlength="20"/>
+                </div>
+                <div class="form-group">
+                    <label for="firstname" class="control-label">Firstname</label>
+                    <input type="text" th:field="*{firstName}" name="firstname" id="firstname" tabindex="1"
+                           class="form-control" placeholder="Hermione" value="" required="true" />
+                </div>
+                <div class="form-group">
+                    <label for="lastname" class="control-label">Lastname</label>
+                    <input type="text" th:field="*{lastName}" name="lastname" id="lastname" tabindex="1"
+                           class="form-control" placeholder="Granger" value="" required="true" />
+                </div>
+                <div class="form-group">
+                    <label for="email" class="control-label">E-mail address</label>
+                    <input type="email" th:field="*{email}" name="email" id="email" tabindex="1" class="form-control"
+                           placeholder="hermione.granger@hogwarts.ac.uk" value=""
+                           data-error="This e-mail address is invalid" required="true" />
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword" class="control-label">Password</label>
+                    <input type="password" th:field="*{password}" name="password" id="loginPassword" tabindex="2"
+                           class="form-control" data-minlength="6" placeholder="********" required="true" />
+                    <div class="help-block">Password must be longer than 6 characters</div>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password" class="control-label">Confirm password</label>
+                    <input type="password" th:field="*{matchingPassword}" name="confirm-password" id="confirm-password"
+                           tabindex="2" class="form-control" data-match="#loginPassword" placeholder="********"
+                           data-match-error="Passwords don't match" required="true" />
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-6 col-xs-offset-3">
+                            <input type="submit" name="register-submit" id="register-submit" tabindex="4"
+                                   class="form-control btn btn-info" value="Register Now" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <div class="text-center"><h3><b>Log In</b></h3></div>
+            <form id="ajax-login-form" th:action="@{/login}" method="post" role="form" autocomplete="off"
+                  data-toggle="validator">
+                <div class="form-group">
+                    <label for="username-or-email" class="control-label">E-mail address or username</label>
+                    <input type="text" name="username" id="username-or-email" tabindex="1" class="form-control"
+                           placeholder="hermione.granger@hogwarts.ac.uk" value="" autocomplete="off"
+                           required="true" />
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="control-label">Password</label>
+                    <input type="password" name="password" id="password" tabindex="2" class="form-control"
+                           placeholder="Password" autocomplete="off" required="true" />
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <input type="checkbox" tabindex="3" name="remember" id="remember" />
+                            <label for="remember"> Remember Me</label>
+                        </div>
+                        <div class="col-xs-5 pull-right">
+                            <input type="submit" name="login-submit" id="login-submit" tabindex="4"
+                                   class="form-control btn btn-success" value="Log In" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="text-center">
+                                <a href="/recover" tabindex="5" class="forgot-password">Forgot Password?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:include="fragments/footer"></div>
+
+</body>
+</html>
